@@ -28,7 +28,6 @@ public class Main extends GraphicsProgram {
     }
 
     public void run() {
-        String[] colorLabel = new String[]{"red", "orange", "YELLOW", "GREEN", "CYAN", "BLUE", "MAGENTA"};
 
         for (String s : colorLabel) {
             newLabel(s);
@@ -46,9 +45,10 @@ public class Main extends GraphicsProgram {
         GLabel label = new GLabel(s);
         label.setColor(rgen.nextColor());
         label.setFont("ARIAL-18");
-        add(label, rgen.nextDouble(0, (getWidth() - label.getWidth())),
-                rgen.nextDouble(label.getAscent(), getHeight() - label.getAscent()));
+        GPoint randomPoint = generateRandomPoint(label);
+        add(label, randomPoint);
     }
+
 
     public void mousePressed(MouseEvent e) {
 
@@ -57,36 +57,38 @@ public class Main extends GraphicsProgram {
         gobj = (GLabel) getElementAt(last);
 
         if (gobj != null) { //mouse has been pressed over one label
-            gobjNew = new GLabel(gobj.getLabel(), gobj.getX(), gobj.getY());
-            /** in debugging, quando arriva alla riga successiva, esce dal debugging, ma continua
-             * ad eseguire correttamente il programma
-             *
-             * Ho provato a sostituire in setColor un colore fisso (es ROSSO) per vedere se il resto del codice funzia,
-             * ed ha esito positivo. Quindi c'e qualcosa con la istruzione "decode" che non va.
-             * nessun errore, nessuna warnings
-             */
-
-            gobjNew.setColor(Color.decode(gobjNew.getLabel()));
-
-            gobjNew.setFont(gobj.getFont());
-            add(gobjNew);
-            gobjNew.sendToFront();
-
-
+            int i = findRightColor(gobj);
+            gobj.setColor(colors[i]);
         }
-
-
     }
+
 
     public void mouseReleased(MouseEvent e) {
         if (gobj != null) {
-            remove(gobjNew);
             gobj.setColor(rgen.nextColor());
         }
     }
 
+    private GPoint generateRandomPoint(GLabel label) {
+        return new GPoint(rgen.nextDouble(0, (getWidth() - label.getWidth())),
+                rgen.nextDouble(label.getAscent(), getHeight() - label.getAscent()));
+    }
+
+    private int findRightColor(GLabel gobj) {
+        String str = gobj.getLabel();
+        int i = 0;
+        while (!colorLabel[i].equals(str)) {
+            i++;
+        }
+        return i;
+    }
+
+    /**Declaring instance variables*/
+
     private final RandomGenerator rgen = new RandomGenerator();
     private GLabel gobj; /* used to check if there is an existing object where the mouse is clicked */
-    private GLabel gobjNew;
+    String[] colorLabel = new String[]{"RED", "ORANGE", "YELLOW", "GREEN", "CYAN", "BLUE", "MAGENTA"};
+    Color[] colors = new Color[]{Color.RED, Color.ORANGE, Color.YELLOW,
+            Color.GREEN, Color.CYAN, Color.BLUE, Color.MAGENTA};
 
 }
