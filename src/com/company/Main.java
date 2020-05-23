@@ -19,7 +19,6 @@ import acm.util.RandomGenerator;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 
-
 public class Main extends GraphicsProgram {
 
     public static void main(String[] args) {
@@ -32,7 +31,6 @@ public class Main extends GraphicsProgram {
         for (String s : colorLabel) {
             newLabel(s);
         }
-
         addMouseListeners();
 
     }
@@ -83,7 +81,9 @@ public class Main extends GraphicsProgram {
         return i;
     }
 
-    /**Declaring instance variables*/
+    /**
+     * Declaring instance variables
+     */
 
     private final RandomGenerator rgen = new RandomGenerator();
     private GLabel gobj; /* used to check if there is an existing object where the mouse is clicked */
